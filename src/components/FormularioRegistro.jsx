@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react'; 
 import { useForm } from 'react-hook-form';
 
 function FormularioRegistro() {
@@ -8,19 +8,27 @@ function FormularioRegistro() {
     formState: { errors },
   } = useForm();
 
-  const paisesPermitidos = ['Mexico', 'Estados Unidos', 'España']; //Pongo esto para ver que no modificamos el html y metamos un pais que no es de los que corresponden
+  const [formState, setFormState] = useState('initial'); // El estado del formulario estando en inicial
+  const paisesPermitidos = ['Mexico', 'Estados Unidos', 'España'];
 
   // Esto se aplicará cuando el formulario se haya enviado, guardando los datos en el localStorage
   const onSubmit = (data) => {
+    setFormState('submitting'); // importante esto pa los cambios
+
     // Verificamos que el país esté en la lista de países permitidos
     if (!paisesPermitidos.includes(data.pais)) {
       alert('El país seleccionado no es válido.');
+      setFormState('error'); // Si el país no es válido, lo ponemos en error
       return;
     }
 
-    console.log(data);
-    localStorage.setItem('formData', JSON.stringify(data));
-    alert("Formulario enviado con éxito!");
+    // Esto es pa que parezca que se envia a un backend
+    setTimeout(() => {
+      // Guardamos los datos en localStorage
+      localStorage.setItem('formData', JSON.stringify(data));
+      setFormState('success'); // Si todo es correcto, saldra a exito
+      
+    }, 1000); 
   };
 
   return (
@@ -54,9 +62,8 @@ function FormularioRegistro() {
         <input
           {...register('email', {
             required: 'El correo es obligatorio',
-           
           })}
-          type="email"   //Apartir de aqui pongo el tipo, porque sino lo pones da por echo que es tipo text, 
+          type="email"
           placeholder="Correo electrónico"
         />
         {errors.email && <p>{errors.email.message}</p>}
@@ -89,12 +96,12 @@ function FormularioRegistro() {
       </div>
 
       <div>
-        <label htmlFor="telefono">Teléfono Movil </label>
+        <label htmlFor="telefono">Teléfono Movil</label>
         <input
           {...register('telefono', {
             required: 'El teléfono es obligatorio',
             pattern: {
-              value: /^[0-9]{9}$/, //esto es para comprobar que intoducimos numeros y que en total sean 9
+              value: /^[0-9]{9}$/,
               message: 'El teléfono debe tener exactamente 10 dígitos',
             },
           })}
@@ -125,7 +132,13 @@ function FormularioRegistro() {
         {errors.terminos && <p>{errors.terminos.message}</p>}
       </div>
 
-      <button type="submit">Registrar</button>
+      <button type="submit" disabled={formState === 'submitting'}>Registrar</button>
+
+      
+      {formState === 'success' && <p>Formulario enviado con éxito!</p>} // EL mensaje que saldra si todo se envio bien ;P
+
+     
+      {formState === 'error' && <p>Ocurrió un error al enviar el formulario. Intenta de nuevo</p>} // El que se enviara si todo va mal ;c
     </form>
   );
 }
