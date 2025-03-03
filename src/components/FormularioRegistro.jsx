@@ -102,7 +102,7 @@ function FormularioRegistro() {
             required: 'El teléfono es obligatorio',
             pattern: {
               value: /^[0-9]{9}$/,
-              message: 'El teléfono debe tener exactamente 10 dígitos',
+              message: 'El teléfono debe tener exactamente 9 dígitos',
             },
           })}
           placeholder="Teléfono"
