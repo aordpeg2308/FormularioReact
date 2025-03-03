@@ -61,3 +61,14 @@ input:focus, select:focus {
   border-color: #3f51b5;  
   outline: none;
 }
+.success-message {
+  color: green;
+}
+
+.submitting-message {
+  color: blue;
+}
+
+.error-message {
+  color: red;
+}

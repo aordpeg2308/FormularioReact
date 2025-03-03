@@ -28,7 +28,7 @@ function FormularioRegistro() {
       localStorage.setItem('formData', JSON.stringify(data));
       setFormState('success'); // Si todo es correcto, saldra a exito
       
-    }, 1000); 
+    }, 5000); 
   };
 
   return (
@@ -134,11 +134,11 @@ function FormularioRegistro() {
 
       <button type="submit" disabled={formState === 'submitting'}>Registrar</button>
 
-      
-      {formState === 'success' && <p>Formulario enviado con éxito!</p>} // EL mensaje que saldra si todo se envio bien ;P
+      //Los mensajes que se enviaran dependiendo del estado ;P
+        {formState === 'success' && <p className="success-message">Formulario enviado con éxito!</p>} 
+        {formState === 'submitting' && <p className="submitting-message">El formulario está siendo enviado...</p>}
+        {formState === 'error' && <p className="error-message">Ocurrió un error al enviar el formulario. Intenta de nuevo</p>}
 
-     
-      {formState === 'error' && <p>Ocurrió un error al enviar el formulario. Intenta de nuevo</p>} // El que se enviara si todo va mal ;c
     </form>
   );
 }
